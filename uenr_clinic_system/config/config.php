@@ -3,6 +3,25 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+// Load .env file
+if (file_exists(__DIR__ . '/../.env')) {
+    $env = parse_ini_file(__DIR__ . '/../.env');
+    foreach ($env as $key => $value) {
+        putenv("$key=$value");
+        $_ENV[$key] = $value;
+        $_SERVER[$key] = $value;
+    }
+} else {
+    die('.env file not found. Please create one based on .env.example');
+}
+
+// Database configuration using .env
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'uenr_clinic_db');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASSWORD') ?: '');
+define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
+
 
 // Database Configuration
 define('DB_HOST', '127.0.0.1');
